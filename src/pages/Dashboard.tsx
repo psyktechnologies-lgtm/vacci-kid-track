@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { Shield, Baby, Calendar, TrendingUp, LogOut, Plus } from "lucide-react";
+import { Shield, Baby, Calendar, TrendingUp, LogOut, Plus, Syringe, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import vaccineCardIllustration from "@/assets/vaccine-card-illustration.png";
+import childrenHealthTracking from "@/assets/children-health-tracking.png";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -116,35 +118,64 @@ const Dashboard = () => {
             </Card>
           </div>
 
-          {/* Add Child Section */}
-          <Card className="border-dashed border-2 hover:border-primary/50 transition-colors animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            <CardHeader className="text-center">
-              <div className="mx-auto w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-                <Baby className="w-8 h-8 text-primary" />
-              </div>
-              <CardTitle>Add Your First Child</CardTitle>
-              <CardDescription>
-                Create a health profile to start tracking vaccinations and milestones
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-center pb-6">
-              <Button 
-                size="lg"
-                className="bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:scale-105"
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                Add Child Profile
-              </Button>
-            </CardContent>
-          </Card>
+          {/* Add Child Section with Visual */}
+          <div className="grid lg:grid-cols-2 gap-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <Card className="border-dashed border-2 hover:border-primary/50 transition-colors">
+              <CardHeader className="text-center">
+                <div className="mx-auto w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 relative">
+                  <Baby className="w-10 h-10 text-primary" />
+                  <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-success flex items-center justify-center">
+                    <Plus className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+                <CardTitle>Add Your First Child</CardTitle>
+                <CardDescription>
+                  Create a health profile to start tracking vaccinations and milestones
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex justify-center pb-6">
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:scale-105"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Add Child Profile
+                </Button>
+              </CardContent>
+            </Card>
 
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            {/* Vaccine Card Visual */}
+            <Card className="overflow-hidden bg-gradient-to-br from-secondary to-background">
+              <CardContent className="p-0">
+                <div className="relative">
+                  <img 
+                    src={vaccineCardIllustration} 
+                    alt="Vaccination tracking illustration"
+                    className="w-full h-full object-contain p-6"
+                  />
+                  <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-card/95 backdrop-blur border border-border/50 shadow-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+                        <Syringe className="w-5 h-5 text-success" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-semibold">Track every dose</div>
+                        <div className="text-xs text-muted-foreground">Complete vaccination history</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Feature Cards with Visual */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up" style={{ animationDelay: '0.3s' }}>
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Calendar className="w-4 h-4 text-primary" />
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Syringe className="w-5 h-5 text-primary" />
                   </div>
                   Vaccination Schedule
                 </CardTitle>
@@ -153,9 +184,20 @@ const Dashboard = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Stay on top of your child's immunization schedule with smart reminders and tracking.
-                </p>
+                <div className="space-y-3 mb-4">
+                  <div className="flex items-center gap-2 p-2 rounded-lg bg-success/5">
+                    <div className="w-2 h-2 rounded-full bg-success"></div>
+                    <span className="text-xs">MMR - Completed</span>
+                  </div>
+                  <div className="flex items-center gap-2 p-2 rounded-lg bg-accent/5">
+                    <div className="w-2 h-2 rounded-full bg-accent"></div>
+                    <span className="text-xs">DTaP - Due in 3 days</span>
+                  </div>
+                  <div className="flex items-center gap-2 p-2 rounded-lg bg-muted">
+                    <div className="w-2 h-2 rounded-full bg-muted-foreground"></div>
+                    <span className="text-xs">Polio - Scheduled</span>
+                  </div>
+                </div>
                 <Button variant="outline" className="w-full">View Schedule</Button>
               </CardContent>
             </Card>
@@ -163,8 +205,8 @@ const Dashboard = () => {
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-success/10 flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-success" />
+                  <div className="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center">
+                    <TrendingUp className="w-5 h-5 text-success" />
                   </div>
                   Growth Tracking
                 </CardTitle>
@@ -173,10 +215,43 @@ const Dashboard = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Track height, weight, and developmental milestones with interactive charts.
-                </p>
+                <div className="space-y-2 mb-4">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Height</span>
+                    <span className="font-semibold">75cm</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Weight</span>
+                    <span className="font-semibold">9.5kg</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Percentile</span>
+                    <span className="font-semibold text-success">75th</span>
+                  </div>
+                </div>
                 <Button variant="outline" className="w-full">Track Growth</Button>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow overflow-hidden">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                    <Activity className="w-5 h-5 text-accent" />
+                  </div>
+                  Health Overview
+                </CardTitle>
+                <CardDescription>
+                  Complete wellness tracking
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <img 
+                  src={childrenHealthTracking} 
+                  alt="Children health tracking"
+                  className="w-full h-32 object-cover rounded-lg mb-3"
+                />
+                <Button variant="outline" className="w-full">View Health Profile</Button>
               </CardContent>
             </Card>
           </div>
